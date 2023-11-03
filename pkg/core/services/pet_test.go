@@ -107,7 +107,6 @@ var _ = Describe("Pet", func() {
 					},
 				})
 
-				// then
 				Expect(err).NotTo(HaveOccurred())
 				Expect(id).NotTo(BeEmpty())
 			})
@@ -149,7 +148,6 @@ var _ = Describe("Pet", func() {
 					},
 				})
 
-				// then
 				Expect(err).NotTo(HaveOccurred())
 				Expect(id).NotTo(BeEmpty())
 			})
