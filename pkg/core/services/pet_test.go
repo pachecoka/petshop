@@ -36,6 +36,15 @@ func (m mockPetRepository) Find(id string) (domain.Pet, error) {
 	return pet, nil
 }
 
+func (m mockPetRepository) Delete(id string) error {
+	_, err := m.Find(id)
+	if err != nil {
+		return errors.New("no pet found")
+	}
+	delete(m.pets, id)
+	return nil
+}
+
 var _ = Describe("Pet", func() {
 	var petService service.PetServiceI
 
@@ -106,6 +115,42 @@ var _ = Describe("Pet", func() {
 			It("should return an error", func() {
 				// when
 				_, err := petService.GetDetails("1233")
+
+				// then
+				Expect(err).To(HaveOccurred())
+			})
+		})
+	})
+
+	Describe("deleting pet", func() {
+		Context("pet is registered", func() {
+			var id string
+			BeforeEach(func() {
+				var err error
+				id, err = petService.Register(domain.Pet{
+					Name:      "Kurama",
+					BirthDate: "12/09/2014",
+					Tutor:     "Karolina",
+				})
+
+				// then
+				Expect(err).NotTo(HaveOccurred())
+				Expect(id).NotTo(BeEmpty())
+			})
+
+			It("should delete pet", func() {
+				// when
+				err := petService.Unregister(id)
+
+				// then
+				Expect(err).NotTo(HaveOccurred())
+			})
+		})
+
+		Context("pet is not registered", func() {
+			It("should return an error", func() {
+				// when
+				err := petService.Unregister("1233")
 
 				// then
 				Expect(err).To(HaveOccurred())

@@ -25,3 +25,7 @@ func (p petService) Register(pet domain.Pet) (string, error) {
 func (p petService) GetDetails(id string) (domain.Pet, error) {
 	return p.petRepo.Find(id)
 }
+
+func (p petService) Unregister(id string) error {
+	return p.petRepo.Delete(id)
+}
