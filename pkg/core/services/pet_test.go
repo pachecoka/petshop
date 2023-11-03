@@ -60,7 +60,11 @@ var _ = Describe("Pet", func() {
 				id, err := petService.Register(domain.Pet{
 					Name:      "Kurama",
 					BirthDate: "12/09/2014",
-					Tutor:     "Karolina",
+					Tutor: domain.Tutor{
+						Name:    "Karolina",
+						Phone:   12345,
+						Address: "test address",
+					},
 				})
 
 				// then
@@ -74,7 +78,11 @@ var _ = Describe("Pet", func() {
 				// when
 				id, err := petService.Register(domain.Pet{
 					BirthDate: "12/09/2014",
-					Tutor:     "Karolina",
+					Tutor: domain.Tutor{
+						Name:    "Karolina",
+						Phone:   12345,
+						Address: "test address",
+					},
 				})
 
 				// then
@@ -92,7 +100,11 @@ var _ = Describe("Pet", func() {
 				id, err = petService.Register(domain.Pet{
 					Name:      "Kurama",
 					BirthDate: "12/09/2014",
-					Tutor:     "Karolina",
+					Tutor: domain.Tutor{
+						Name:    "Karolina",
+						Phone:   12345,
+						Address: "test address",
+					},
 				})
 
 				// then
@@ -130,7 +142,11 @@ var _ = Describe("Pet", func() {
 				id, err = petService.Register(domain.Pet{
 					Name:      "Kurama",
 					BirthDate: "12/09/2014",
-					Tutor:     "Karolina",
+					Tutor: domain.Tutor{
+						Name:    "Karolina",
+						Phone:   12345,
+						Address: "test address",
+					},
 				})
 
 				// then
