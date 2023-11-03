@@ -1,6 +1,7 @@
 package services_test
 
 import (
+	"errors"
 	"github.com/google/uuid"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
@@ -26,6 +27,14 @@ func (m mockTutorRepository) Insert(tutor domain.Tutor) (string, error) {
 	return id, nil
 }
 
+func (m mockTutorRepository) Find(id string) (domain.Tutor, error) {
+	tutor, exists := m.tutors[id]
+	if !exists {
+		return domain.Tutor{}, errors.New("tutor not found")
+	}
+	return tutor, nil
+}
+
 var _ = Describe("Tutor", func() {
 	var tutorService service.TutorServiceI
 
@@ -44,14 +53,13 @@ var _ = Describe("Tutor", func() {
 					Address: "test address",
 				})
 
-				// then
 				Expect(err).NotTo(HaveOccurred())
 				Expect(id).NotTo(BeEmpty())
 			})
 		})
 
 		Context("with missing tutor name", func() {
-			It("should not register the pet", func() {
+			It("should not register the tutor", func() {
 				// when
 				id, err := tutorService.Register(domain.Tutor{
 					Phone:   123456,
@@ -61,6 +69,42 @@ var _ = Describe("Tutor", func() {
 				// then
 				Expect(err).To(HaveOccurred())
 				Expect(id).To(BeEmpty())
+			})
+		})
+	})
+
+	Describe("getting tutor's details", func() {
+		Context("tutor is registered", func() {
+			var id string
+			BeforeEach(func() {
+				var err error
+				id, err = tutorService.Register(domain.Tutor{
+					Name:    "Karolina",
+					Phone:   123456,
+					Address: "test address",
+				})
+
+				Expect(err).NotTo(HaveOccurred())
+				Expect(id).NotTo(BeEmpty())
+			})
+
+			It("should return the tutor's details", func() {
+				// when
+				details, err := tutorService.GetDetails(id)
+				Expect(err).NotTo(HaveOccurred())
+
+				// then
+				Expect(details.Name).To(Equal("Karolina"))
+			})
+		})
+
+		Context("tutor is not registered", func() {
+			It("should return an error", func() {
+				// when
+				_, err := tutorService.GetDetails("1233")
+
+				// then
+				Expect(err).To(HaveOccurred())
 			})
 		})
 	})

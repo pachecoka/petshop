@@ -21,3 +21,7 @@ func (t tutorService) Register(tutor domain.Tutor) (string, error) {
 	}
 	return t.tutorRepo.Insert(tutor)
 }
+
+func (t tutorService) GetDetails(id string) (domain.Tutor, error) {
+	return t.tutorRepo.Find(id)
+}
