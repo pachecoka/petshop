@@ -21,3 +21,7 @@ func (p petService) Register(pet domain.Pet) (string, error) {
 	}
 	return p.petRepo.Insert(pet)
 }
+
+func (p petService) GetDetails(id string) (domain.Pet, error) {
+	return p.petRepo.Find(id)
+}
